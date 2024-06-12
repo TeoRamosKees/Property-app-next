@@ -1,7 +1,7 @@
 import { Card } from '@/app/ui/dashboard/cards';
 import  Search  from '@/app/ui/dashboard/search';
 import { CreateProperty } from '@/app/ui/properties/buttons';
-import { Suspense } from 'react';
+import { Suspense } from 'react'; 
 
 export default function Properties() {
     return (

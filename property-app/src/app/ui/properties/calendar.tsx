@@ -1,17 +1,50 @@
 "use client";
 
 import clsx from "clsx";
-import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, startOfMonth } from "date-fns";
-import { useEffect, useState } from "react";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 
 // weekdays in Spanish
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
-export default function PropertyCalendar() { 
+interface Event {
+    startDate: Date;
+    endDate: Date;
+    title: string;
+}
+
+interface EventCalendarProps {
+    events?: Event[];
+}
+
+interface DayWithEvents {
+    day: Date;
+    title: string;
+}
+
+export default function PropertyCalendar({ events = [] }: EventCalendarProps) { 
     const [currentDate, setCurrentDate] = useState(new Date());
     const [firstDayOfMonth, setFirstDayOfMonth] = useState(startOfMonth(currentDate));
     const [lastDayOfMonth, setLastDayOfMonth] = useState(endOfMonth(currentDate));
     const [startingDayIndex, setStartingDayIndex] = useState(getDay(firstDayOfMonth));
+
+    // Create only one array of days with all the events
+    const daysWithEvents = useMemo(() => {
+        const daysWithEvents: DayWithEvents[] = [];
+        events.forEach((event) => {
+            const days = eachDayOfInterval({
+                start: event.startDate,
+                end: event.endDate
+            });
+            days.forEach((day) => {
+                daysWithEvents.push({
+                    day,
+                    title: event.title
+                });
+            });
+        });
+        return daysWithEvents;
+    }, [events]);
 
     useEffect(() => {
         setFirstDayOfMonth(startOfMonth(currentDate));
@@ -65,23 +98,39 @@ export default function PropertyCalendar() {
             </div>
             <div className="grid grid-cols-7 gap-2">
                 {WEEKDAYS.map((day) => (
-                    <div key={day} className="text-center border font-bold">
+                    <div key={day} className="text-center border-2 border-black font-bold">
                         {day}
                     </div>
                 ))}
                 {Array.from({ length: startingDayIndex }).map((_, index) => (
-                    <div key={`empty-${index}`} className="text-center border rounded-md p-2 h-20" />
+                    <div key={`empty-${index}`} className="text-center border-2 border-black rounded-md p-2 h-20" />
                 ))}
-                {/* add different style to current day by using clsx  "text-center border rounded-md p-2 hover:bg-black hover:text-white h-20"*/}
-                {daysInMonth.map((day, index) => (
-                    <div key={index} className={clsx(
-                        "text-center border rounded-md p-2 h-20 hover:bg-black hover:text-white",
-                        format(day, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') && 'bg-slate-700 text-white'
-                    )}>
-                        {format(day, 'd')}
-                    </div>
-                ))}
+                {daysInMonth.map((day, index) => {
+                    const eventTitles = daysWithEvents
+                        .filter((event) => isSameDay(event.day, day))
+                        .map((event) => event.title);
+
+                    return (
+                        <div key={index} className={clsx(
+                            "text-center border-2 border-black rounded-md p-2 h-20 hover:bg-black hover:text-white", {
+                                'bg-slate-700 text-white': isToday(day),
+                            }
+                        )}>
+                            {format(day, 'd')}
+                            {eventTitles.length > 0 && (
+                                <div className="mt-2">
+                                    {eventTitles.map((title, idx) => (
+                                        <div key={idx} className="text-xs text-black bg-green-200">
+                                            {title}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     ); 
 }
+

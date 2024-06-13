@@ -1,41 +1,66 @@
 "use client";
 
 import clsx from "clsx";
-import { eachDayOfInterval, endOfMonth, format, getDay, startOfMonth } from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, startOfMonth } from "date-fns";
+import { useEffect, useState } from "react";
 
 // weekdays in Spanish
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
 export default function PropertyCalendar() { 
-    const currentDate = new Date();
-    const firstDayOfMonth = startOfMonth(currentDate);
-    const lastDayOfMonth = endOfMonth(currentDate);
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const [firstDayOfMonth, setFirstDayOfMonth] = useState(startOfMonth(currentDate));
+    const [lastDayOfMonth, setLastDayOfMonth] = useState(endOfMonth(currentDate));
+    const [startingDayIndex, setStartingDayIndex] = useState(getDay(firstDayOfMonth));
+
+    useEffect(() => {
+        setFirstDayOfMonth(startOfMonth(currentDate));
+        setLastDayOfMonth(endOfMonth(currentDate));
+        setStartingDayIndex(getDay(startOfMonth(currentDate)));
+    }, [currentDate]);
 
     const daysInMonth = eachDayOfInterval({
         start: firstDayOfMonth,
         end: lastDayOfMonth
     });
 
-    const startingDayIndex = getDay(firstDayOfMonth);
+    function handleButton(n: string) {
+        switch (n) {
+            case "1":
+                setCurrentDate(addMonths(currentDate, -12));
+                break;
+            case "2":
+                setCurrentDate(addMonths(currentDate, -1));
+                break;
+            case "3":
+                setCurrentDate(addMonths(currentDate, 1));
+                break;
+            case "4":
+                setCurrentDate(addMonths(currentDate, 12));
+                break;
+            default:
+                console.log("Invalid option");
+        }
+    }
 
     return ( 
         <div className="container mx-auto p-4">
             <div className="grid grid-cols-7 gap 2 mb-5">
                 <div />
-                <div>
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">Año anterior</button>
+                <div className="flex flex-col items-center">
+                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("1")}>Año anterior</button>
                 </div>
-                <div>
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">Mes anterior</button>
+                <div className="flex flex-col items-center">
+                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("2")}>Mes anterior</button>
                 </div>
                 <div className="mb-4">
                     <h2 className="text-center">{format(currentDate, 'MMMM yyyy')}</h2>
                 </div>
-                <div>
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">Mes siguiente</button>
+                <div className="flex flex-col items-center">
+                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("3")}>Mes siguiente</button>
                 </div>
-                <div>
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">Año siguiente</button>
+                <div className="flex flex-col items-center">
+                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("4")}>Año siguiente</button>
                 </div> 
             </div>
             <div className="grid grid-cols-7 gap-2">

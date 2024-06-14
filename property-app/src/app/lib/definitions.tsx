@@ -9,16 +9,21 @@ export type User = {
     password: string;
   };
   
-export type clientDate = {
-    clientName: string;
-    number: string;
-    usedDates: Array<string>;
+export type Event = {
+    startDate: Date;
+    endDate: Date;
+    title: string;
 }
 
-  export type property = {
-    id: string;
-    name: string;
-    reservations: Array<clientDate>;
-  };
+export type EventCalendarProps = {
+    events?: Event[];
+}
+
+export type property = {
+  id: string;
+  userId: string;
+  name: string;
+  reservations: Event[];
+};
   
   //https://tailwindcomponents.com/component/calendar-1 -> calendar component

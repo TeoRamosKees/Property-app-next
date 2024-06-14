@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
+import ChangeMonthButton from "@/app/ui/properties/buttons";
 
 // weekdays in Spanish
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
@@ -78,22 +79,40 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
 
     return ( 
         <div className="container mx-auto p-4">
-            <div className="grid grid-cols-7 gap 2 mb-5">
-                <div />
+            <div className="grid grid-cols-2 gap-2 mb-5">
                 <div className="flex flex-col items-center">
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("1")}>Año anterior</button>
+                    <h1 className="text-2xl font-bold">Calendario de la propiedad</h1>  
                 </div>
                 <div className="flex flex-col items-center">
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("2")}>Mes anterior</button>
+                    <button className="bg-green-700 text-white rounded-md p-2 hover:bg-green-900 w-fit">
+                        Agregar alquiler
+                    </button>
+                </div>
+            </div>
+            <div className="grid grid-cols-7 gap-2 mb-5">
+                <div />
+                <div className="flex flex-col items-center">
+                    <div onClick={() => handleButton("1")}>
+                        <ChangeMonthButton text="Año anterior" />
+                    </div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <div onClick={() => handleButton("2")}>
+                        <ChangeMonthButton text="Mes anterior" />
+                    </div>
                 </div>
                 <div className="mb-4">
                     <h2 className="text-center">{format(currentDate, 'MMMM yyyy')}</h2>
                 </div>
                 <div className="flex flex-col items-center">
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("3")}>Mes siguiente</button>
+                    <div onClick={() => handleButton("3")}>
+                        <ChangeMonthButton text="Mes siguiente" />
+                    </div>
                 </div>
                 <div className="flex flex-col items-center">
-                    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => handleButton("4")}>Año siguiente</button>
+                    <div onClick={() => handleButton("4")}>
+                        <ChangeMonthButton text="Año siguiente" />
+                    </div>
                 </div> 
             </div>
             <div className="grid grid-cols-7 gap-2">
@@ -112,7 +131,7 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
 
                     return (
                         <div key={index} className={clsx(
-                            "text-center border-2 border-black rounded-md p-2 h-20 hover:bg-black hover:text-white", {
+                            "text-center border-2 border-black rounded-md p-2 h-20 hover:bg-black hover:text-white cursor-pointer", {
                                 'bg-slate-700 text-white': isToday(day),
                             }
                         )}>
@@ -120,7 +139,7 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
                             {eventTitles.length > 0 && (
                                 <div className="mt-2">
                                     {eventTitles.map((title, idx) => (
-                                        <div key={idx} className="text-xs text-black bg-green-200">
+                                        <div key={idx} className="text-xs text-black bg-slate-400">
                                             {title}
                                         </div>
                                     ))}

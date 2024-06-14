@@ -12,3 +12,13 @@ export function CreateProperty() {
     </Link>
   );
 }
+
+interface textButtonProps {
+  text: string;
+}
+
+export default function changeMonthButton({text}: textButtonProps) {
+  return (
+    <button className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">{text}</button>
+  );
+}

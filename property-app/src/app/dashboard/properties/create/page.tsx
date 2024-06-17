@@ -13,7 +13,7 @@ interface Event {
 
 export default function CreateProperty() {
     const [userId, setUserId] = useState('UUID-DE-PRUEBA');
-    const [name, setName] = useState('My Property');
+    const [name, setName] = useState('Casa bosque peralta ramos');
     const [reservations, setReservations] = useState<Event[]>([
         {
             startDate: subDays(new Date(), 3),
@@ -28,26 +28,25 @@ export default function CreateProperty() {
         e.preventDefault();
         const response = await addProperty({ userId, name, reservations });
         console.log(response);
-        redirect('/dashboard/properties')
     };
 
     return (
         <div>
-            <h1 className='text-center'>Create Property</h1>
+            <h1 className='text-center'>Agregar propiedad</h1>
             <form onSubmit={handleSubmit} className='border-2 border-black flex flex-col items-center w-fit shadow-2xl'>
                 <label>
-                    Property name:
+                    Nombre que identifica la propiedad:
                     <input
                         className='border-2 border-gray-300 p-2 m-2'
                         type="text"
                         placeholder={name}
-                        onChange={(e) => setUserId(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </label>
                 {/* submit button */}
-                <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">
-                    Add Property
+                <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => redirect('/dashboard/properties')}>
+                    Agregar
                 </button>
             </form>
         </div>

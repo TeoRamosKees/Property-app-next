@@ -1,5 +1,3 @@
-'use client'
-
 import Search from '@/app/ui/dashboard/search';
 import { CreateProperty } from '@/app/ui/properties/buttons';
 import DisplayProperties from '@/app/ui/properties/displayProperties';

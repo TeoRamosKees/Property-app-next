@@ -3,7 +3,6 @@
 import { addProperty } from '@/app/actions';
 import { useState } from 'react';
 import { addDays, subDays } from 'date-fns';
-import { redirect } from 'next/navigation'
 
 interface Event {
     startDate: Date;
@@ -45,7 +44,7 @@ export default function CreateProperty() {
                     />
                 </label>
                 {/* submit button */}
-                <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900" onClick={() => redirect('/dashboard/properties')}>
+                <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">
                     Agregar
                 </button>
             </form>

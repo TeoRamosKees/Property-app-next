@@ -85,7 +85,7 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
                 </div>
                 <div className="flex flex-col items-center">
                     <button className="bg-green-700 text-white rounded-md p-2 hover:bg-green-900 w-fit">
-                        Agregar alquiler
+                        +
                     </button>
                 </div>
             </div>
@@ -93,12 +93,12 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
                 <div />
                 <div className="flex flex-col items-center">
                     <div onClick={() => handleButton("1")}>
-                        <ChangeMonthButton text="Año anterior" />
+                        <ChangeMonthButton text="<<" />
                     </div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div onClick={() => handleButton("2")}>
-                        <ChangeMonthButton text="Mes anterior" />
+                        <ChangeMonthButton text="<" />
                     </div>
                 </div>
                 <div className="mb-4">
@@ -106,12 +106,12 @@ export default function PropertyCalendar({ events = [] }: EventCalendarProps) {
                 </div>
                 <div className="flex flex-col items-center">
                     <div onClick={() => handleButton("3")}>
-                        <ChangeMonthButton text="Mes siguiente" />
+                        <ChangeMonthButton text=">" />
                     </div>
                 </div>
                 <div className="flex flex-col items-center">
                     <div onClick={() => handleButton("4")}>
-                        <ChangeMonthButton text="Año siguiente" />
+                        <ChangeMonthButton text=">>" />
                     </div>
                 </div> 
             </div>

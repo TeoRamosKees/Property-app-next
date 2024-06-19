@@ -10,6 +10,7 @@ interface Event {
     endDate: Date;
     title: string;
 }
+
 type PropertyType = {
     id: number;
     property_id: string;
@@ -18,8 +19,7 @@ type PropertyType = {
 }
 
 
-export const addProperty = async ({userId, name, reservations}: {userId: string, name: string, reservations: Event[]}) => {
-    // make db call to add property
+export const addProperty = async ({userId, name}: {userId: string, name: string}) => {
     let propertyId = v4().toString();
 
     console.log(`Adding property with id: ${propertyId}`)
@@ -27,14 +27,13 @@ export const addProperty = async ({userId, name, reservations}: {userId: string,
         console.log('Adding property');
         await sql`INSERT INTO properties (property_id, user_id, name) VALUES (${propertyId}, ${userId}, ${name})`;
         console.log('Property added successfully');
-        reservations.forEach(async (reservation) => {
-            await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${reservation.startDate.toString()}, ${reservation.endDate.toString()}, ${reservation.title})`;
-        });
+        // reservations.forEach(async (reservation) => {
+        //     await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${reservation.startDate.toString()}, ${reservation.endDate.toString()}, ${reservation.title})`;
+        // });
 
     } catch (error) {
         return { message: 'Error adding property' }
     }
-    
 
     return { message: 'Property added successfully' }
 }
@@ -61,4 +60,16 @@ export const getPropertiesByUserId = async (userId: string) => {
     } catch (error) {
         return { message: 'Error adding property' }
     }
+}
+
+export const addReservation = async ({propertyId, startDate, endDate, title}: {propertyId: string, startDate: Date, endDate: Date, title: string}) => {
+    try{
+        console.log('Adding reservation');
+        await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title})`;
+        console.log('Reservation added successfully');
+    } catch (error) {
+        return { message: 'Error adding reservation' }
+    }
+
+    return { message: 'Reservation added successfully' }
 }

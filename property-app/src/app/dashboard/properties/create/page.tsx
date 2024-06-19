@@ -13,19 +13,19 @@ interface Event {
 export default function CreateProperty() {
     const [userId, setUserId] = useState('UUID-DE-PRUEBA');
     const [name, setName] = useState('Casa bosque peralta ramos');
-    const [reservations, setReservations] = useState<Event[]>([
-        {
-            startDate: subDays(new Date(), 3),
-            endDate: addDays(new Date(), 1),
-            title: 'My Reservation'
-        }
-    ]);
+    // const [reservations, setReservations] = useState<Event[]>([
+    //     {
+    //         startDate: subDays(new Date(), 3),
+    //         endDate: addDays(new Date(), 1),
+    //         title: 'My Reservation'
+    //     }
+    // ]);
 
 
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await addProperty({ userId, name, reservations });
+        const response = await addProperty({ userId, name });
         console.log(response);
     };
 

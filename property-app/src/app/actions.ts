@@ -62,7 +62,7 @@ export const getPropertiesByUserId = async (userId: string) => {
     }
 }
 
-export const addReservation = async ({propertyId, startDate, endDate, title}: {propertyId: string, startDate: Date, endDate: Date, title: string}) => {
+export const addReservation = async ({propertyId, startDate, endDate, title}: {propertyId: string, startDate: string, endDate: string, title: string}) => {
     try{
         console.log('Adding reservation');
         await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title})`;

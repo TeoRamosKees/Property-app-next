@@ -4,8 +4,10 @@ import { format } from "date-fns";
 import { ChangeEvent, useState } from "react";
 import { addReservation } from "@/app/actions";
 import { usePathname } from 'next/navigation'
+import { areIntervalsOverlapping, interval } from "date-fns";
+import { Event } from "@/app/ui/properties/calendar";
 
-export default function AddDateForm() {
+export default function AddDateForm({ events = [] }: { events: Event[] }) {
     const today = format(new Date(), "dd-MM-yyyy");
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
@@ -18,11 +20,12 @@ export default function AddDateForm() {
         }
         setStartDate(e.target.value);
         if (e.target.value > endDate) {
-            setEndDate(e.target.value);
+           setEndDate(e.target.value);
         }
     };  
 
     const handleSubmission = async () => {
+        checkDatesDontOverlap(startDate, endDate);
         const response = await addReservation({
             propertyId,
             startDate,
@@ -32,6 +35,18 @@ export default function AddDateForm() {
 
         console.log(response);
     }
+
+    const checkDatesDontOverlap = (start: string, end: string) => {
+        const newInterval = interval(new Date(start), new Date(end));
+        events.forEach((event) => {
+            const eventInterval = interval(new Date(event.start_date), new Date(event.end_date));
+            if (areIntervalsOverlapping(newInterval, eventInterval, { inclusive: true })) {
+                alert('La fecha seleccionada se superpone con otra reserva');
+                throw new Error('La fecha seleccionada se superpone con otra reserva');
+            }
+        });
+    }
+
 
     return (
         <div className="flex justify-center items-center">

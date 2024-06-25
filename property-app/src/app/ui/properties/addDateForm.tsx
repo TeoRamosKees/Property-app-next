@@ -6,7 +6,7 @@ import { addReservation } from "@/app/actions";
 import { usePathname } from 'next/navigation'
 
 export default function AddDateForm() {
-    const today = format(new Date(), 'yyyy-MM-dd');
+    const today = format(new Date(), "dd-MM-yyyy");
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
     const [additionalInfo, setAdditionalInfo] = useState('');

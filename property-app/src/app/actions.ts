@@ -3,13 +3,14 @@
 import { sql } from '@vercel/postgres';
 import { v4 } from 'uuid';
 import { unstable_noStore as noStore } from 'next/cache';
+import { Event } from '@/app/ui/properties/calendar';
 
 
-interface Event {
-    startDate: Date;
-    endDate: Date;
-    title: string;
-}
+// interface Event {
+//     startDate: string;
+//     endDate: string;
+//     title: string;
+// }
 
 type PropertyType = {
     id: number;
@@ -27,10 +28,7 @@ export const addProperty = async ({userId, name}: {userId: string, name: string}
         console.log('Adding property');
         await sql`INSERT INTO properties (property_id, user_id, name) VALUES (${propertyId}, ${userId}, ${name})`;
         console.log('Property added successfully');
-        // reservations.forEach(async (reservation) => {
-        //     await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${reservation.startDate.toString()}, ${reservation.endDate.toString()}, ${reservation.title})`;
-        // });
-
+        
     } catch (error) {
         return { message: 'Error adding property' }
     }
@@ -72,4 +70,16 @@ export const addReservation = async ({propertyId, startDate, endDate, title}: {p
     }
 
     return { message: 'Reservation added successfully' }
+}
+
+export const getReservationsByPropertyId = async (propertyId: string) => {
+    noStore(); 
+    try{
+        const data = await sql<Event>`SELECT * FROM reservations WHERE property_id = ${propertyId}`;
+        console.log('Reservations fetched successfully');
+        
+        return data.rows;
+    } catch (error) {
+        return { message: 'Error fetching reservations'}
+    }
 }

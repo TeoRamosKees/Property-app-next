@@ -1,23 +1,22 @@
-import PropertyCalendar from '@/app/ui/properties/calendar';
-import { addDays, subDays } from 'date-fns';
+import { getReservationsByPropertyId } from "@/app/actions";
+import PropertyCalendar from "@/app/ui/properties/calendar";
 
-export default function PropertyCalendarPage() {
+const PropertyCalendarPage = async ({ params }: { params: any }) => {
+    const { id } = params;
+    const events = await getReservationsByPropertyId(id);
+    console.log(`Eventos en el calendario ${events}`);
+    
+    if (!Array.isArray(events)) {
+        return <p className="mt-4 text-gray-400">No data available.</p>;
+    }
+    
+    events.forEach((event) => {
+        console.log(`Evento: ${event.title} - ${event.start_date} - ${event.end_date}`);
+    });
+
     return (
-        <div>
-            <PropertyCalendar 
-                events={[
-                    {
-                        startDate: subDays(new Date(), 5),
-                        endDate: subDays(new Date(), 1),
-                        title: "Alqiuler de Junio a Juan lubro"
-                    },
-                    {
-                        startDate: addDays(new Date(), 1),
-                        endDate: addDays(new Date(), 5),
-                        title: "Test event 2"
-                    }
-                ]}
-            />
-        </div>
+        <PropertyCalendar events={events} propertyId={id} />
     );
-}
+};
+
+export default PropertyCalendarPage;

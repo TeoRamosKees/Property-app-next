@@ -2,8 +2,11 @@
 
 import { sql } from '@vercel/postgres';
 import { v4 } from 'uuid';
-import { unstable_noStore as noStore } from 'next/cache';
-import { Event } from '@/app/ui/properties/calendar';
+import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
+import { Event } from './ui/properties/calendar';
+import { redirect } from 'next/navigation';
+import { AuthError } from 'next-auth';
+import { signIn } from '../../auth';
 
 
 // interface Event {
@@ -33,7 +36,8 @@ export const addProperty = async ({userId, name}: {userId: string, name: string}
         return { message: 'Error adding property' }
     }
 
-    return { message: 'Property added successfully' }
+    revalidatePath('/dashboard/properties');
+    redirect('/dashboard/properties');
 }
 
 export const getAllProperties = async () => {
@@ -68,8 +72,7 @@ export const addReservation = async ({propertyId, startDate, endDate, title}: {p
     } catch (error) {
         return { message: 'Error adding reservation' }
     }
-
-    return { message: 'Reservation added successfully' }
+    revalidatePath(`/dashboard/properties/${propertyId}/calendar`);
 }
 
 export const getReservationsByPropertyId = async (propertyId: string) => {
@@ -83,3 +86,34 @@ export const getReservationsByPropertyId = async (propertyId: string) => {
         return { message: 'Error fetching reservations'}
     }
 }
+
+export const deleteProperty = async (propertyId: string) => {
+    try{
+        console.log('Deleting property');
+        await sql`DELETE FROM properties WHERE property_id = ${propertyId}`;
+        await sql`DELETE FROM reservations WHERE property_id = ${propertyId}`;
+        console.log('Property deleted successfully');
+    } catch (error) {
+        return { message: 'Error deleting property' }
+    }
+    revalidatePath('/dashboard/properties');
+}
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+  ) {
+    try {
+      await signIn('credentials', formData);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case 'CredentialsSignin':
+            return 'Invalid credentials.';
+          default:
+            return 'Something went wrong.';
+        }
+      }
+      throw error;
+    }
+  }

@@ -12,7 +12,7 @@ export default function Properties() {
         <div>
             <div className="my-4 flex content-center justify-center items-center gap-5">
                 <Suspense fallback={<div>Loading...</div>}>
-                    <Search placeholder="Search properties..." />
+                    <Search placeholder="Buscar propiedades..." />
                 </Suspense>
                 <CreateProperty />
             </div>

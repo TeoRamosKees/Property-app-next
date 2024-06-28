@@ -10,6 +10,8 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
 export interface Event {
+    id: string;
+    property_id: string;
     start_date: Date;
     end_date: Date;
     title: string;

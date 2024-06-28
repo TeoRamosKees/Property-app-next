@@ -1,16 +1,8 @@
 import { deleteReservation, getReservationsByPropertyId } from "@/app/actions";
 import { Event } from "@/app/ui/properties/calendar";
 
-interface EventId {
-    id: string;
-    property_id: string;
-    start_date: string;
-    end_date: string;
-    title: string;
-    color: string;
-}
 
-export default async function DeleteDate({ reservations = [] }: { reservations: EventId[] }){
+export default async function DeleteDate({ reservations = [] }: { reservations: Event[] }){
     if (!Array.isArray(reservations)) {
         return <p className="mt-4 text-gray-400">No data available.</p>;
     }

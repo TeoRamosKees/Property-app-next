@@ -1,5 +1,6 @@
 'use server'
 
+
 import { sql } from '@vercel/postgres';
 import { v4 } from 'uuid';
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
@@ -99,6 +100,18 @@ export const deleteProperty = async (propertyId: string) => {
         return { message: 'Error deleting property' }
     }
     revalidatePath('/dashboard/properties');
+}
+
+export const deleteReservation = async ({propertyId, startDate, endDate, title}: {propertyId: string, startDate: string, endDate: string, title: string}) => {
+    try{
+        console.log('Deleting reservation');
+        await sql`DELETE FROM reservations WHERE property_id = ${propertyId} AND start_date = ${startDate} AND end_date = ${endDate} AND title = ${title}`;
+        console.log('Reservation deleted successfully');
+    } catch (error) {
+        return { message: 'Error deleting reservation' }
+    }
+    revalidatePath(`/dashboard/properties/${propertyId}/calendar`);
+    redirect(`/dashboard/properties/${propertyId}/calendar`);
 }
 
 export async function authenticate(

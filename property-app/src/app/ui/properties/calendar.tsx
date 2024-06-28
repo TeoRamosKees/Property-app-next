@@ -5,7 +5,7 @@ import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, is
 import { useEffect, useMemo, useState } from "react";
 import ChangeMonthButton from "@/app/ui/properties/buttons";
 import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
@@ -83,10 +83,12 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
 
     return (
         <div className="container mx-auto p-4">
-            <div className="grid grid-cols-2 gap-2 mb-5">
+            <div className="grid grid-cols-1 gap-2 mb-5">
                 <div className="flex flex-col items-center">
-                    <h1 className="text-2xl font-bold">Calendario de la propiedad</h1>
+                    <h1 className="text-4xl font-bold">Calendario de la propiedad</h1>
                 </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 mb-5">
                 <div className="flex flex-col items-center">
                     <Link
                         href={{
@@ -96,6 +98,17 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                     >
                         <span className="hidden md:block">Agregar alquiler</span>{' '}
                         <PlusIcon className="h-5 md:ml-4" />
+                    </Link>
+                </div>
+                <div className="flex flex-col items-center">
+                    <Link
+                        href={{
+                            pathname: `/dashboard/properties/${propertyId}/calendar/deleteDate`,
+                        }}
+                        className="flex h-10 items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        <span className="hidden md:block">Cancelar alquiler</span>{' '}
+                        <TrashIcon className="h-5 md:ml-4" />
                     </Link>
                 </div>
             </div>

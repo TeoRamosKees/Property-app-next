@@ -14,10 +14,9 @@ export async function GET(request: Request) {
     }
   
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
       
       const result = await sql`
-        INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${hashedPassword});
+        INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password});
       `;
       console.log('User inserted:', result);
       return NextResponse.json({ result }, { status: 200 });

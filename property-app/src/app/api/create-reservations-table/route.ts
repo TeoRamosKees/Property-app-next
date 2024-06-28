@@ -9,7 +9,8 @@ export async function GET(request: Request) {
         property_id VARCHAR(255) NOT NULL,
         start_date VARCHAR(255) NOT NULL,
         end_date VARCHAR(255) NOT NULL,
-        title VARCHAR(255) NOT NULL
+        title VARCHAR(255) NOT NULL,
+        color VARCHAR(255) NOT NULL
       );
     `;
     return NextResponse.json({ result }, { status: 200 });

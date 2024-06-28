@@ -30,23 +30,23 @@ export default function CreateProperty() {
     };
 
     return (
-        <div>
-            <h1 className='text-center'>Agregar propiedad</h1>
-            <form onSubmit={handleSubmit} className='border-2 border-black flex flex-col items-center w-fit shadow-2xl'>
-                <label>
-                    Nombre que identifica la propiedad:
-                    <input
-                        className='border-2 border-gray-300 p-2 m-2'
-                        type="text"
-                        placeholder={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </label>
-                {/* submit button */}
-                <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900">
-                    Agregar
-                </button>
+        <div className='flex flex-col items-center align-items'>
+            <h1 className='text-center text-3xl font-bold'>Agregar propiedad</h1>
+            <form onSubmit={handleSubmit} className='border-2 border-black flex flex-col items-center w-fit shadow-2xl mt-10 p-20'>
+                    <label className='grid grid-cols-1 p-2 font-bold'>
+                        Nombre que identifica la propiedad:
+                        <input
+                            className='border-2 border-gray-500 p-2 mt-5 font-normal w-96 rounded-md'
+                            type="text"
+                            placeholder='Nombre de la propiedad...'
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </label>
+                    {/* submit button */}
+                    <button type="submit" className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900 mt-5 ">
+                        Agregar
+                    </button>
             </form>
         </div>
     );

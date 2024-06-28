@@ -64,15 +64,17 @@ export const getPropertiesByUserId = async (userId: string) => {
     }
 }
 
-export const addReservation = async ({propertyId, startDate, endDate, title}: {propertyId: string, startDate: string, endDate: string, title: string}) => {
+export const addReservation = async ({propertyId, startDate, endDate, title, color}: {propertyId: string, startDate: string, endDate: string, title: string, color: string}) => {
     try{
         console.log('Adding reservation');
-        await sql`INSERT INTO reservations (property_id, start_date, end_date, title) VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title})`;
+        await sql`INSERT INTO reservations (property_id, start_date, end_date, title, color) VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title}, ${color})`;
+        console.log(`${title}, ${color}`)
         console.log('Reservation added successfully');
     } catch (error) {
         return { message: 'Error adding reservation' }
     }
     revalidatePath(`/dashboard/properties/${propertyId}/calendar`);
+    redirect(`/dashboard/properties/${propertyId}/calendar`);
 }
 
 export const getReservationsByPropertyId = async (propertyId: string) => {

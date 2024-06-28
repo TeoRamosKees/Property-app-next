@@ -13,6 +13,7 @@ export interface Event {
     start_date: Date;
     end_date: Date;
     title: string;
+    color: string;
 }
 
 interface EventCalendarProps {
@@ -23,6 +24,7 @@ interface EventCalendarProps {
 interface DayWithEvents {
     day: Date;
     title: string;
+    color: string;
 }
 
 const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
@@ -41,7 +43,8 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
             days.forEach((day) => {
                 daysWithEvents.push({
                     day,
-                    title: event.title
+                    title: event.title,
+                    color: event.color
                 });
             });
         });
@@ -132,9 +135,9 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                     <div key={`empty-${index}`} className="text-center border-2 border-black rounded-md p-2 h-20" />
                 ))}
                 {daysInMonth.map((day, index) => {
-                    const eventTitles = daysWithEvents
+                    const eventDetails = daysWithEvents
                         .filter((event) => isSameDay(event.day, day))
-                        .map((event) => event.title);
+                        .map((event) => ({ title: event.title, color: event.color }));
 
                     return (
                         <div key={index} className={clsx(
@@ -143,11 +146,19 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                             }
                         )}>
                             {format(day, 'd')}
-                            {eventTitles.length > 0 && (
+                            {eventDetails.length > 0 && (
                                 <div className="mt-2">
-                                    {eventTitles.map((title, idx) => (
-                                        <div key={idx} className="text-xs text-black bg-slate-400 truncate hover:text-clip">
-                                            {title}
+                                    {eventDetails.map((event, idx) => (
+                                        <div key={idx} className={clsx(`text-xs text-black p-2 truncate hover:text-clip`, {
+                                            'bg-red-500': event.color === 'red' ,
+                                            'bg-green-500': event.color === 'green',
+                                            'bg-yellow-500': event.color === 'yellow',
+                                            'bg-blue-500': event.color === 'blue',
+                                            'bg-violet-500': event.color === 'violet',
+                                            'bg-pink-500': event.color === 'pink',
+                                        }
+                                    )}>
+                                            {event.title}
                                         </div>
                                     ))}
                                 </div>

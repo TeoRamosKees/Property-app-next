@@ -12,6 +12,7 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);
     const [additionalInfo, setAdditionalInfo] = useState('');
+    const [color, setColor] = useState('green');
     const propertyId = usePathname().split('/')[3];
 
     const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +31,8 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
             propertyId,
             startDate,
             endDate,
-            title: additionalInfo
+            title: additionalInfo,
+            color
         });
 
         console.log(response);
@@ -40,7 +42,7 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
         const newInterval = interval(new Date(start), new Date(end));
         events.forEach((event) => {
             const eventInterval = interval(new Date(event.start_date), new Date(event.end_date));
-            if (areIntervalsOverlapping(newInterval, eventInterval, { inclusive: true })) {
+            if (areIntervalsOverlapping(newInterval, eventInterval, { inclusive: false })) {
                 alert('La fecha seleccionada se superpone con otra reserva');
                 throw new Error('La fecha seleccionada se superpone con otra reserva');
             }
@@ -90,11 +92,26 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
                             onChange={(e) => setAdditionalInfo(e.target.value)}
                         />
                     </div>
+                    <div className="flex flex-col">
+                        <label className="text-left text-gray-600 mb-2">
+                            Color:
+                        </label>
+                        <select className="border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            onChange={(e) => setColor(e.target.value)}
+                        >
+                            <option value="green">Verde</option>
+                            <option value="yellow">Amarillo</option>
+                            <option value="red">Rojo</option>
+                            <option value="blue">Azul</option>
+                            <option value="violet">Violeta</option>
+                            <option value="pink">Rosa</option>
+                        </select>
+                    </div>
                     <div className="flex justify-center">
                         <button 
                             type="submit" 
                             onClick={handleSubmission}
-                            className="h-12 w-full rounded-lg bg-blue-600 text-white font-medium transition-colors hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                            className="flex h-10 items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                             Agregar
                         </button>
                     </div>

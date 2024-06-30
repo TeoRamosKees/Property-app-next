@@ -74,8 +74,6 @@ export const addReservation = async ({propertyId, startDate, endDate, title, col
     } catch (error) {
         return { message: 'Error adding reservation' }
     }
-    revalidatePath(`/dashboard/properties/${propertyId}/calendar`);
-    redirect(`/dashboard/properties/${propertyId}/calendar`);
 }
 
 export const getReservationsByPropertyId = async (propertyId: string) => {

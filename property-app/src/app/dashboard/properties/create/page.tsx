@@ -30,9 +30,9 @@ export default function CreateProperty() {
     };
 
     return (
-        <div className='flex flex-col items-center align-items'>
+        <div className='flex flex-col items-center align-items '>
             <h1 className='text-center text-3xl font-bold'>Agregar propiedad</h1>
-            <form onSubmit={handleSubmit} className='border-2 border-black flex flex-col items-center w-fit shadow-2xl mt-10 p-20'>
+            <form onSubmit={handleSubmit} className='border-2 border-black flex flex-col items-center w-fit shadow-2xl mt-10 p-20 rounded-lg '>
                     <label className='grid grid-cols-1 p-2 font-bold'>
                         Nombre que identifica la propiedad:
                         <input

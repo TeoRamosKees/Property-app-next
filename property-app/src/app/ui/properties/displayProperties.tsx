@@ -23,7 +23,7 @@ async function renderProperties() {
     const properties = await getPropertiesByUserId(user.id);
 
     if (!Array.isArray(properties) || properties.length === 0) {
-        return <p className="mt-4 text-gray-400">No data available. {JSON.stringify(session, null, 2)}</p>;
+        return <p className="mt-4 text-gray-400 text-center text-2xl font-bold">No hay propiedades cargadas.</p>;
     }
 
     return (

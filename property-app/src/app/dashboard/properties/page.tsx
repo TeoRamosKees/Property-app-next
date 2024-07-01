@@ -8,6 +8,7 @@ import { CardsSkeleton }  from '@/app/ui/skeletons';
 
 export default function Properties() {
     noStore();
+    
     return (
         <div>
             <div className="my-4 flex content-center justify-center items-center gap-5">

@@ -1,5 +1,6 @@
 import PropertyCard from "../dashboard/cards";
-import { getPropertiesByUserId } from "@/app/actions";
+import { getPropertiesByUserId, getUser } from "@/app/actions";
+import {  getSession } from "../../../../lib";
 
 type PropertyType = {
     id: number;
@@ -9,10 +10,20 @@ type PropertyType = {
 }
 
 async function renderProperties() {
-    const properties = await getPropertiesByUserId('UUID-DE-PRUEBA');
+    const session = await getSession();
+    console.log(`Session: ${session}`);
+    //session = { "user": { "email": "teo2@hotmail.com", "password": "teoram" }, "expires": "2024-07-01T23:31:42.052Z", "iat": 1719876692, "exp": 1719876702 }
+    const userEmail = session.user.email;
+    const user = await getUser(userEmail);
+    if (!user) {
+        return <p className="mt-4 text-gray-400">No data available.</p>;
+    }
+    
+
+    const properties = await getPropertiesByUserId(user.id);
 
     if (!Array.isArray(properties) || properties.length === 0) {
-        return <p className="mt-4 text-gray-400">No data available.</p>;
+        return <p className="mt-4 text-gray-400">No data available. {JSON.stringify(session, null, 2)}</p>;
     }
 
     return (

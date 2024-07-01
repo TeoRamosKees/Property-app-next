@@ -8,6 +8,11 @@ export async function GET(request: Request) {
     const email = searchParams.get('email');
     const password = searchParams.get('password');
     const name = searchParams.get('name');
+    if (!email || !password || !name) {
+      return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
   
     if (!email || !password || !name) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });
@@ -16,7 +21,7 @@ export async function GET(request: Request) {
     try {
       
       const result = await sql`
-        INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${password});
+        INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${hashedPassword});
       `;
       console.log('User inserted:', result);
       return NextResponse.json({ result }, { status: 200 });

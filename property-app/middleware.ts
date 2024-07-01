@@ -1,9 +1,18 @@
-import NextAuth from 'next-auth';
-import { authConfig } from './auth.config';
+import { NextRequest } from "next/server";
+import { updateSession } from "./lib";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+export async function middleware(request: NextRequest) {
+  const currentSession = cookies().get('session')?.value;
  
-export default NextAuth(authConfig).auth;
+  if (currentSession && !request.nextUrl.pathname.startsWith('/dashboard')) {
+    return Response.redirect(new URL('/dashboard/properties', request.url))
+  }
  
-export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-};
+  if (!currentSession && !request.nextUrl.pathname.startsWith('/login')) {
+    return Response.redirect(new URL('/login', request.url))
+  }
+
+  return await updateSession(request);
+}

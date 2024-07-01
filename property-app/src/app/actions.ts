@@ -6,8 +6,8 @@ import { v4 } from 'uuid';
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
 import { Event } from './ui/properties/calendar';
 import { redirect } from 'next/navigation';
-import { AuthError } from 'next-auth';
-import { signIn } from '../../auth';
+import { User } from '@/app/lib/definitions';
+import { cookies } from 'next/headers';
 
 
 // interface Event {
@@ -45,7 +45,6 @@ export const getAllProperties = async () => {
     noStore();
     try{
         const data = await sql<PropertyType>`SELECT * FROM properties`;
-        console.log('Properties fetched successfully');
         
         return data.rows;
     } catch (error) {
@@ -57,7 +56,6 @@ export const getPropertiesByUserId = async (userId: string) => {
     noStore();
     try{
         const data = await sql<PropertyType>`SELECT * FROM properties WHERE user_id = ${userId}`;
-        console.log('Properties fetched successfully');
         
         return data.rows;
     } catch (error) {
@@ -113,21 +111,13 @@ export const deleteReservation = async ({propertyId, startDate, endDate, title}:
     redirect(`/dashboard/properties/${propertyId}/calendar`);
 }
 
-export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData,
-  ) {
+export async function getUser(email: string): Promise<User | undefined> {
     try {
-      await signIn('credentials', formData);
+      const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
+      console.log('User fetched:', user.rows[0]);
+      return user.rows[0];
     } catch (error) {
-      if (error instanceof AuthError) {
-        switch (error.type) {
-          case 'CredentialsSignin':
-            return 'Invalid credentials.';
-          default:
-            return 'Something went wrong.';
-        }
-      }
-      throw error;
+      console.error('Failed to fetch user:', error);
+      throw new Error('Failed to fetch user.');
     }
   }

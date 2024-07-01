@@ -5,7 +5,7 @@ import { lusitana } from '../fonts';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Modal from './modal';
+import { Modal } from './modal';
 
 
 const handleDeleteButton = async (id: string, router: any) => {

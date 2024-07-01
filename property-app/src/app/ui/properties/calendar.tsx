@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import ChangeMonthButton from "@/app/ui/properties/buttons";
 import Link from "next/link";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { ModalInformation } from "../dashboard/modal";
 
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
@@ -34,6 +35,16 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
     const [firstDayOfMonth, setFirstDayOfMonth] = useState(startOfMonth(currentDate));
     const [lastDayOfMonth, setLastDayOfMonth] = useState(endOfMonth(currentDate));
     const [startingDayIndex, setStartingDayIndex] = useState(getDay(firstDayOfMonth));
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [eventTitle, setEventTitle] = useState('');
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    const handleOpenModal = (title: string) => {
+        setEventTitle(title);
+        openModal();
+    }
+
 
     const daysWithEvents = useMemo(() => {
         const daysWithEvents: DayWithEvents[] = [];
@@ -159,7 +170,10 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                             "text-center border-2 border-black rounded-md p-2 h-20 hover:bg-black hover:text-white cursor-pointer", {
                                 'bg-slate-700 text-white': isToday(day),
                             }
-                        )}>
+                        )}
+                        onClick={() => {handleOpenModal(eventDetails[0]?.title)}}
+                            
+                        >
                             {format(day, 'd')}
                             {eventDetails.length > 0 && (
                                 <div className="mt-2">
@@ -182,6 +196,13 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                     );
                 })}
             </div>
+            <ModalInformation
+                isOpen={isModalOpen}
+                title={eventTitle}
+                onCancel={closeModal}
+            >
+                <p className="font-bold text-center">Informacion adicional:</p>
+            </ModalInformation>
         </div>
     );
 }

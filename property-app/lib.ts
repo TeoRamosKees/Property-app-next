@@ -2,18 +2,19 @@ import { getUser } from "@/app/actions";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { addDays } from "date-fns";
 const bcrypt = require('bcrypt');
 
 const secretKey = process.env.AUTH_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: any) {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("10 sec from now")
-    .sign(key);
-}
+    return await new SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("24 hours from now")
+      .sign(key);
+  }
 
 export async function decrypt(input: string): Promise<any> {
   const { payload } = await jwtVerify(input, key, {
@@ -39,7 +40,7 @@ export async function login(formData: FormData) {
     }
 
   // Create the session
-  const expires = new Date(Date.now() + 10 * 1000);
+  const expires = new Date(addDays(new Date(), 1));
   const session = await encrypt({ user, expires });
 
   // Save the session in a cookie
@@ -63,7 +64,7 @@ export async function updateSession(request: NextRequest) {
 
   // Refresh the session so it doesn't expire
   const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // one day
+  parsed.expires =  addDays(new Date(), 1) // one day from now
   const res = NextResponse.next();
   res.cookies.set({
     name: "session",

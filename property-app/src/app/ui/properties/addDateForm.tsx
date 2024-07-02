@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import { ChangeEvent, useState } from "react";
 import { addReservation } from "@/app/actions";
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { areIntervalsOverlapping, interval } from "date-fns";
 import { Event } from "@/app/ui/properties/calendar";
 
@@ -14,7 +14,6 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [color, setColor] = useState('green');
     const propertyId = usePathname().split('/')[3];
-    const router = useRouter();
 
     const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (!e || !e.target){
@@ -39,9 +38,6 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
             });
 
             console.log(response);
-
-            // Redirect to the calendar page
-            router.push(`/dashboard/properties/${propertyId}/calendar`);
         } catch (error) {
             console.error(error);
         }

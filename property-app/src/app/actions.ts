@@ -8,6 +8,7 @@ import { Event } from './ui/properties/calendar';
 import { redirect } from 'next/navigation';
 import { User } from '@/app/lib/definitions';
 import { cookies } from 'next/headers';
+const bcrypt = require('bcrypt');
 
 
 // interface Event {
@@ -122,3 +123,17 @@ export async function getUser(email: string): Promise<User | undefined> {
       throw new Error('Failed to fetch user.');
     }
   }
+
+export async function addUser({name, email, password}: {name: string, email: string, password: string}) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        await sql`
+            INSERT INTO users (name, email, password) VALUES (${name}, ${email}, ${hashedPassword});
+        `;
+        console.log('User inserted');
+    } catch (error) {
+        console.error('Error inserting user:', error);
+        return { message: 'Error inserting user' }
+    }
+    redirect('/login');
+}

@@ -1,23 +1,9 @@
 import { redirect } from "next/navigation";
 import { login } from "../../../lib";
+import Link from "next/link";
 
-export default async function Page() {
+export default async function LoginForm() {
   return (
-    //darle mejor estilo
-    // <section>
-    //   <form
-    //     action={async (formData) => {
-    //       "use server";
-    //       await login(formData);
-    //       redirect("/dashboard/properties");
-    //     }}
-    //   >
-    //     <input type="email" name="email" placeholder="Email" />
-    //     <input type="password" name="password" placeholder="Password" />
-    //     <br />
-    //     <button type="submit">Login</button>
-    //   </form>
-    // </section>
     <div className="flex flex-col items-center align-items ">
       <form
         action={async (formData) => {
@@ -25,23 +11,23 @@ export default async function Page() {
           await login(formData);
           redirect("/dashboard/properties");
         }}
-        className="border-2 border-black flex flex-col items-center w-fit shadow-2xl mt-10 p-20 rounded-lg "
+        className="border flex flex-col items-center w-fit shadow-2xl mt-10 p-20 rounded-3xl"
       >
         <label className="text-center text-3xl font-bold">Iniciar sesión</label>
-        <label className="grid grid-cols-1 p-2 font-bold">
+        <label className="grid grid-cols-1 p-2 font-medium">
           Email:
           <input
-            className="border-2 border-gray-500 p-2 mt-5 font-normal w-max rounded-md"
+            className="border border-gray-500 p-2 mt-5 font-normal w-max rounded-md"
             type="email"
             placeholder="Email..."
             name="email"
             required
           />
         </label>
-        <label className="grid grid-cols-1 p-2 font-bold">
+        <label className="grid grid-cols-1 p-2 font-medium">
           Contraseña:
           <input
-            className="border-2 border-gray-500 p-2 mt-5 font-normal w-max rounded-md"
+            className="border border-gray-500 p-2 mt-5 font-normal w-max rounded-md"
             type="password"
             placeholder="Contraseña..."
             name="password"
@@ -51,10 +37,16 @@ export default async function Page() {
         {/* submit button */}
         <button
           type="submit"
-          className="bg-slate-700 text-white rounded-md p-2 hover:bg-slate-900 mt-5 "
+          className="flex h-10 m-2 items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         >
           Iniciar sesión
         </button>
+        <Link
+          href="/signup"
+          className="flex h-10 m-2 items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        >
+          <span className="hidden md:block">Registrarse</span>{' '}
+        </Link>
       </form>
     </div>
   );

@@ -12,7 +12,6 @@ export default function SignUpForm() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,7 +26,6 @@ export default function SignUpForm() {
         setEmail('');
         setPassword('');
         setConfirmPassword('');
-        
     };
 
     return (

@@ -28,15 +28,15 @@ export async function login(formData: FormData) {
 
   const user = { email: formData.get("email"), password: formData.get("password")};
   if (!user.email || !user.password) {
-    return "Missing required parameters";
+    return "Faltan datos";
   }
   const dbUser = await getUser(user.email.toString());
     if (!dbUser) {
-        return "User not found";
+        return "Datos incorrectos. Intente de nuevo";
     }
   const passwordMatch = await bcrypt.compare(user.password.toString(), dbUser.password);
     if (!passwordMatch) {
-        return "Datos incorrectos";
+        return "Datos incorrectos. Intente de nuevo";
     }
 
   // Create the session

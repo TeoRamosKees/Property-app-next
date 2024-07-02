@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import NavLinks from './nav-links';
-import { PowerIcon } from '@heroicons/react/24/outline';
+import { PowerIcon, HomeModernIcon } from '@heroicons/react/24/outline';
 import { logout } from '../../../../lib';
 import { redirect } from 'next/navigation';
+
 
 
 export default function SideNav() {
@@ -12,8 +13,8 @@ export default function SideNav() {
         className="mb-2 flex h-20 items-end justify-start rounded-md bg-black p-4 md:h-40"
         href="/dashboard/properties"
       >
-        <div className="w-32 text-white md:w-40">
-            <h1 className="text-2xl font-bold">Property App Logo</h1>
+        <div className="text-white text-center md:w-40 w-max p-5">
+            <HomeModernIcon className="ml-10" />
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">

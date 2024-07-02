@@ -31,7 +31,7 @@ export default function SignUpForm() {
     return (
         <div className="flex flex-col items-center align-items">
             <form onSubmit={handleSubmit} className="border flex flex-col items-center w-fit shadow-2xl mt-10 p-20 rounded-3xl">
-                <label className="text-center text-3xl font-bold">Registrarse</label>
+                <label className="text-center text-3xl font-bold mb-10">Registrarse</label>
                 <label className="grid grid-cols-1 p-2 font-medium">
                     Nombre:
                     <input

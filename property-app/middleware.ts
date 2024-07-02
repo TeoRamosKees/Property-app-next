@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     return Response.redirect(new URL('/dashboard/properties', request.url))
   }
  
-  if (!currentSession && (!request.nextUrl.pathname.startsWith('/login') || !request.nextUrl.pathname.startsWith('/signup')) ) {
+  if (!currentSession && (!request.nextUrl.pathname.startsWith('/login') || !request.nextUrl.pathname.startsWith('/signup')) || !request.nextUrl.pathname.endsWith('/')) {
     return Response.redirect(new URL('/login', request.url))
   }
 

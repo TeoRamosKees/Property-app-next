@@ -1,7 +1,6 @@
 'use client';
 
-import { deleteProperty } from '@/app/actions';
-import { lusitana } from '../fonts';
+import { deleteProperty, deleteReservation } from '@/app/actions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -78,6 +77,87 @@ export default function PropertyCard({
             >
                 <p>¿Está seguro que desea eliminar esta propiedad?</p>
             </Modal>
+        </div>
+    );
+}
+
+export function ReservationCard({
+    propertyId,
+    reservationId,
+    title,
+    startDate,
+    endDate,
+}: {
+    propertyId: string;
+    reservationId: string;
+    title: string;
+    startDate: string;
+    endDate: string;
+}) {
+    const router = useRouter();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    const handleDelete = async () => {
+        await deleteReservation({ propertyId, startDate, endDate, title });
+        router.refresh();
+        closeModal();
+    };
+
+    return (
+        <div className="property-card mb-10 bg-white border border-gray-200 rounded-lg block max-w-sm shadow dark:bg-gray-800 dark:border-gray-700">
+            <Link
+                href={`/dashboard/properties/${propertyId}/calendar/${reservationId}`}
+                className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+            >
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Reserva: {title}</h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">Fecha inicio: {startDate}</p>
+                <p className="font-normal text-gray-700 dark:text-gray-400">Fecha fin: {endDate}</p>
+            </Link>
+            <div className='grid grid-cols-1'>
+                <button className="bg-black text-white rounded-md p-2 hover:bg-slate-900 m-2 flex flex-col items-center" onClick={openModal}>
+                    Cancelar
+                </button>
+            </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                title="Confirmar eliminación"
+                onCancel={closeModal}
+                onConfirm={handleDelete}
+            >
+                <p>¿Está seguro que desea eliminar esta propiedad?</p>
+            </Modal>
+        </div>
+    );
+}
+
+export function ReservationEditCard({
+    propertyId,
+    reservationId,
+    title,
+    startDate,
+    endDate,
+}: {
+    propertyId: string;
+    reservationId: string;
+    title: string;
+    startDate: string;
+    endDate: string;
+}) {
+
+    return (
+        <div className="property-card mb-10 bg-white border border-gray-200 rounded-lg block max-w-sm shadow dark:bg-gray-800 dark:border-gray-700">
+            <Link
+                href={`/dashboard/properties/${propertyId}/calendar/${reservationId}`}
+                className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+            >
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Reserva: {title}</h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">Fecha inicio: {startDate}</p>
+                <p className="font-normal text-gray-700 dark:text-gray-400">Fecha fin: {endDate}</p>
+            </Link>
         </div>
     );
 }

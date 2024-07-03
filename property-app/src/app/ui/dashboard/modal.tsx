@@ -44,11 +44,13 @@ export function ModalInformation({
     isOpen,
     title,
     children,
+    onAccess,
     onCancel,
 }: {
     isOpen: boolean;
     title: string;
     children: ReactNode; //los <p> </p> son los "children"
+    onAccess: () => void;
     onCancel: () => void;
 }) {
     if (!isOpen) return null;
@@ -62,6 +64,10 @@ export function ModalInformation({
                     <button className="bg-gray-500 text-white p-2 rounded mr-2 hover:bg-gray-600"
                         onClick={onCancel} >
                         Cerrar
+                    </button>
+                    <button className="bg-gray-500 text-white p-2 rounded mr-2 hover:bg-gray-600"
+                        onClick={onAccess} >
+                        Ver en detalle
                     </button>
                 </div>
             </div>

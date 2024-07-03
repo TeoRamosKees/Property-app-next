@@ -1,12 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth, addDays} from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth, addDays, set} from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import ChangeMonthButton from "@/app/ui/properties/buttons";
 import Link from "next/link";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { ModalInformation } from "../dashboard/modal";
+import { redirectPage } from "@/app/actions";
 
 const WEEKDAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
 
@@ -28,6 +29,7 @@ interface DayWithEvents {
     day: Date;
     title: string;
     color: string;
+    id: string;
 }
 
 const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
@@ -37,11 +39,18 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
     const [startingDayIndex, setStartingDayIndex] = useState(getDay(firstDayOfMonth));
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [eventTitle, setEventTitle] = useState('');
+    const [eventId, setEventId] = useState('');
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const handleOpenModal = (title: string) => {
+    const accessReservationDetails = async () => {
+        closeModal();
+        await redirectPage(`/dashboard/properties/${propertyId}/calendar/${eventId}`);
+    }
+
+    const handleOpenModal = ({title, id}: {title: string, id: string}) => {
         setEventTitle(title);
+        setEventId(id);
         openModal();
     }
 
@@ -57,7 +66,8 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                 daysWithEvents.push({
                     day,
                     title: event.title,
-                    color: event.color
+                    color: event.color,
+                    id: event.id
                 });
             });
         });
@@ -101,7 +111,7 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                     <h1 className="text-4xl font-bold">Calendario de la propiedad</h1>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 mb-5">
+            <div className="grid grid-cols-3 gap-2 mb-5">
                 <div className="flex flex-col items-center">
                     <Link
                         href={{
@@ -122,6 +132,17 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                     >
                         <span className="hidden md:block">Cancelar alquiler</span>{' '}
                         <TrashIcon className="h-5 md:ml-4" />
+                    </Link>
+                </div>
+                <div className="flex flex-col items-center">
+                    <Link
+                        href={{
+                            pathname: `/dashboard/properties/${propertyId}/calendar/editDate`,
+                        }}
+                        className="flex h-10 items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        <span className="hidden md:block">Editar alquiler</span>{' '}
+                        <PencilIcon className="h-5 md:ml-4" />
                     </Link>
                 </div>
             </div>
@@ -163,7 +184,7 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                 {daysInMonth.map((day, index) => {
                     const eventDetails = daysWithEvents
                         .filter((event) => isSameDay(event.day, day))
-                        .map((event) => ({ title: event.title, color: event.color }));
+                        .map((event) => ({ title: event.title, color: event.color, id: event.id }));
 
                     return (
                         <div key={index} className={clsx(
@@ -171,7 +192,7 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
                                 'bg-slate-700 text-white': isToday(day),
                             }
                         )}
-                        onClick={() => {handleOpenModal(eventDetails[0]?.title)}}
+                        onClick={() => {handleOpenModal({title: eventDetails[0]?.title, id: eventDetails[0]?.id})}}
                             
                         >
                             {format(day, 'd')}
@@ -199,6 +220,7 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
             <ModalInformation
                 isOpen={isModalOpen}
                 title={eventTitle}
+                onAccess={accessReservationDetails}
                 onCancel={closeModal}
             >
                 <p className="font-bold text-center">Informacion adicional:</p>

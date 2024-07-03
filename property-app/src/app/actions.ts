@@ -137,3 +137,7 @@ export async function addUser({name, email, password}: {name: string, email: str
     }
     redirect('/login');
 }
+
+export async function redirectPage(page: string) {
+    redirect(page);
+}

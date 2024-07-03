@@ -1,4 +1,3 @@
-import { getReservationsByPropertyId } from "@/app/actions";
 import { Event } from "@/app/ui/properties/calendar";
 import ReservationList from "./reservationList";
 

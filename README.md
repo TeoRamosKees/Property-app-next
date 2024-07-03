@@ -1,7 +1,6 @@
 # Property-app-next
-Property rent app is an app build to manage the dates your property is rented. <br>
-You can have multiple properties and all of them individually have a different calendar that you are able to manage. <br>
-You can add and delete reservations for an specific property as well as you can add and delete properties from your dashboard. <br>
+Property Rent App is designed to help you manage the rental dates for your properties efficiently.  <br>
+Whether you have one property or multiple, this app provides an intuitive interface to handle all your reservation needs. <br>
 
 ## Features
 * <b>Manage Multiple Properties:</b> Add, edit, and delete properties from your dashboard.

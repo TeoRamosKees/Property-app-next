@@ -95,7 +95,7 @@ export default function SignUpForm() {
                 <Link
                     href="/login"
                 > 
-                    <span className="hidden md:block hover:font-bold mt-10">Ya tienes cuenta? Inicia sesión</span>
+                    <span className="md:block hover:font-bold mt-10">Ya tienes cuenta? Inicia sesión</span>
                 </Link>
             </form>
         </div>

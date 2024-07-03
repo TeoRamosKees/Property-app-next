@@ -64,10 +64,13 @@ export const getPropertiesByUserId = async (userId: string) => {
     }
 }
 
-export const addReservation = async ({propertyId, startDate, endDate, title, color}: {propertyId: string, startDate: string, endDate: string, title: string, color: string}) => {
+export const addReservation = async ({propertyId, startDate, endDate, title, color, hosts}: {propertyId: string, startDate: string, endDate: string, title: string, color: string, hosts:number}) => {
     try{
         console.log('Adding reservation');
-        await sql`INSERT INTO reservations (property_id, start_date, end_date, title, color) VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title}, ${color})`;
+        await sql`
+        INSERT INTO reservations (property_id, start_date, end_date, title, color, hosts) 
+        VALUES (${propertyId}, ${startDate.toString()}, ${endDate.toString()}, ${title}, ${color}, ${hosts})
+        `;
         console.log(`${title}, ${color}`)
         console.log('Reservation added successfully');
     } catch (error) {
@@ -94,6 +97,7 @@ export const deleteProperty = async (propertyId: string) => {
         console.log('Deleting property');
         await sql`DELETE FROM properties WHERE property_id = ${propertyId}`;
         await sql`DELETE FROM reservations WHERE property_id = ${propertyId}`;
+        await sql`DELETE FROM reservationPayment WHERE property_id = ${propertyId}`
         console.log('Property deleted successfully');
     } catch (error) {
         return { message: 'Error deleting property' }
@@ -136,6 +140,72 @@ export async function addUser({name, email, password}: {name: string, email: str
         return { message: 'Error inserting user' }
     }
     redirect('/login');
+}
+// Payment: {property_id, reservation_id, detail,  amount}
+export async function addPayment({property_id, reservation_id, detail, amount}: {property_id: string, reservation_id: string, detail: string, amount: number}) {
+    try {
+        await sql`
+            INSERT INTO reservationPayment (property_id, reservation_id, detail, amount) VALUES (${property_id}, ${reservation_id}, ${detail}, ${amount});
+        `;
+        console.log('Payment inserted');
+    } catch (error) {
+        console.error('Error inserting payment:', error);
+        return { message: 'Error inserting payment' }
+    }
+    revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+    redirect(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+}
+
+export async function getPaymentsByReservationId(reservation_id: string) {
+    noStore();
+    try{
+        const data = await sql`SELECT * FROM reservationPayment WHERE reservation_id = ${reservation_id}`;
+        console.log('Payments fetched successfully');
+        
+        return data.rows;
+    } catch (error) {
+        return { message: 'Error fetching payments'}
+    }
+}
+
+export async function editPayment(payment_id: string, {detail, amount}: {detail: string, amount: number}, reservation_id: string) {
+    try {
+        await sql`
+            UPDATE reservationPayment 
+            SET detail = ${detail}, amount = ${amount} 
+            WHERE id = ${payment_id};
+        `;
+        console.log('Payment updated');
+    } catch (error) {
+        console.error('Error updating payment:', error);
+        return { message: 'Error updating payment' }
+    }
+    revalidatePath(`/dashboard/properties/${payment_id}/calendar/${reservation_id}`);
+}
+
+export async function deletePayment(payment_id: string, reservation_id: string) {
+    try {
+        await sql`
+            DELETE FROM reservationPayment WHERE id = ${payment_id};
+        `;
+        console.log('Payment deleted');
+    } catch (error) {
+        console.error('Error deleting payment:', error);
+        return { message: 'Error deleting payment' }
+    }
+    revalidatePath(`/dashboard/properties/${payment_id}/calendar/${reservation_id}`);
+}
+
+export async function getReservationById(reservation_id: string): Promise<Event | undefined> {
+    try {
+        const data = await sql<Event>`SELECT * FROM reservations WHERE id = ${reservation_id}`;
+        console.log('Reservation fetched successfully');
+        
+        return data.rows[0];
+    } catch (error) {
+        console.error('Error fetching reservation:', error);
+        throw new Error('Error fetching reservation');
+    }
 }
 
 export async function redirectPage(page: string) {

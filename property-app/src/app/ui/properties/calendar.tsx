@@ -18,6 +18,7 @@ export interface Event {
     end_date: Date;
     title: string;
     color: string;
+    hosts: number;
 }
 
 interface EventCalendarProps {

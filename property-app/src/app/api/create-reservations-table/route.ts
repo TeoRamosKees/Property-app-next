@@ -10,7 +10,8 @@ export async function GET(request: Request) {
         start_date VARCHAR(255) NOT NULL,
         end_date VARCHAR(255) NOT NULL,
         title VARCHAR(255) NOT NULL,
-        color VARCHAR(255) NOT NULL
+        color VARCHAR(255) NOT NULL,
+        hosts VARCHAR(255) NOT NULL
       );
     `;
     return NextResponse.json({ result }, { status: 200 });

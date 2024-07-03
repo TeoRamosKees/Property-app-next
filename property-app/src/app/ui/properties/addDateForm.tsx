@@ -13,6 +13,7 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
     const [endDate, setEndDate] = useState(today);
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [color, setColor] = useState('green');
+    const [hosts, setHosts] = useState('0');
     const propertyId = usePathname().split('/')[3];
 
     const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +35,8 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
                 startDate,
                 endDate,
                 title: additionalInfo,
-                color
+                color,
+                hosts: parseInt(hosts)
             });
 
             console.log(response);
@@ -110,6 +112,17 @@ export default function AddDateForm({ events = [] }: { events: Event[] }) {
                             <option value="violet">Violeta</option>
                             <option value="pink">Rosa</option>
                         </select>
+                    </div>
+                    <div className="flex flex-col">
+                        <label className="text-left text-gray-600 mb-2">
+                            Cantidad de inquilinos:
+                        </label>
+                        <input 
+                            type="text" 
+                            placeholder="Cantidad de inquilinos" 
+                            className="border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            onChange={(e) => setHosts(e.target.value)}
+                        />
                     </div>
                     <div className="flex justify-center">
                         <button  

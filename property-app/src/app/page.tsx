@@ -13,7 +13,7 @@ export default function Home() {
         <div>
 
         </div>
-        <div className='flex flex-col items-center justify-center text-center'>
+        <div className='flex flex-col items-center justify-center text-center ml-20'>
           <h1 className="text-4xl font-bold">Bienvenidos al mejor gestor de propiedades</h1>
           <p className="text-lg mt-4 w-max">Gestiona los alquileres</p>
           <p className="text-lg mt-4 w-max ml-5">de tus propiedades de forma sencilla</p>
@@ -23,7 +23,7 @@ export default function Home() {
             Registrarse ya
           </Link>
         </div>
-        <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-col items-center justify-center hidden md:block ml-20'>
           <HomeModernIcon className="md:block h-md w-md text-gray-800" />
         </div>
         <div className='place-content-center'>

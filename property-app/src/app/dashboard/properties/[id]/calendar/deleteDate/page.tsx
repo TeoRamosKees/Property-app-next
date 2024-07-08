@@ -1,4 +1,5 @@
 import { getReservationsByPropertyId } from "@/app/actions";
+import { BackButton } from "@/app/ui/properties/buttons";
 import DeleteDate from "@/app/ui/properties/deleteDate";
 
 
@@ -11,8 +12,8 @@ export default async function DeleteDateProperty({params}: {params: any}){
     console.log(`Eventos en el calendario ${events}`);
 
     return (
-        <div>
-            <DeleteDate reservations={events}/>
+        <div className="grid grid-cols-1">
+            <DeleteDate reservations={events} id={id}/>
         </div>
     );
 

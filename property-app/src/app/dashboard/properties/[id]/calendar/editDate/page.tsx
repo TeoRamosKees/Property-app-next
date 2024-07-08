@@ -12,7 +12,7 @@ export default async function EditDateProperty({params}: {params: any}){
 
     return (
         <div>
-            <EditDate reservations={events}/>
+            <EditDate reservations={events} id={id}/>
         </div>
     );
 

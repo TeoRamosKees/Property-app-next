@@ -1,5 +1,6 @@
 import AddDateForm from "@/app/ui/properties/addDateForm";
 import { getReservationsByPropertyId } from "@/app/actions";
+import { BackButton } from "@/app/ui/properties/buttons";
 
 
 
@@ -11,6 +12,11 @@ export default async function AddDate({ params }: { params: any }) {
     }
 
     return (
+        <div className="grid grid-cols-3">
+            <div className="w-fit">
+                <BackButton href={`/dashboard/properties/${id}/calendar`} />
+            </div>
             <AddDateForm events={events}/>
+        </div>
     );
 }

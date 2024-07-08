@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth, addDays, set} from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isToday, startOfMonth, addDays, isAfter} from "date-fns";
 import { useEffect, useMemo, useState } from "react";
 import ChangeMonthButton from "@/app/ui/properties/buttons";
 import Link from "next/link";
@@ -59,21 +59,23 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
     const daysWithEvents = useMemo(() => {
         const daysWithEvents: DayWithEvents[] = [];
         events.forEach((event) => {
-            const days = eachDayOfInterval({
-                start: addDays(event.start_date, 1),
-                end: addDays(event.end_date, 1)
-            });
-            days.forEach((day) => {
-                daysWithEvents.push({
-                    day,
-                    title: event.title,
-                    color: event.color,
-                    id: event.id
+            if (!isAfter(currentDate, event.end_date)){
+                const days = eachDayOfInterval({
+                    start: addDays(event.start_date, 1),
+                    end: addDays(event.end_date, 1)
                 });
-            });
+                days.forEach((day) => {
+                    daysWithEvents.push({
+                        day,
+                        title: event.title,
+                        color: event.color,
+                        id: event.id
+                    });
+                });
+            }
         });
         return daysWithEvents;
-    }, [events]);
+    }, [events, currentDate]);
 
     useEffect(() => {
         setFirstDayOfMonth(startOfMonth(currentDate));

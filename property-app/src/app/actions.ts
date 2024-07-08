@@ -196,15 +196,41 @@ export async function deletePayment(payment_id: string, reservation_id: string) 
     revalidatePath(`/dashboard/properties/${payment_id}/calendar/${reservation_id}`);
 }
 
-export async function getReservationById(reservation_id: string): Promise<Event | undefined> {
+export async function getReservationById(reservation_id: any): Promise<Event | undefined> {
     try {
         const data = await sql<Event>`SELECT * FROM reservations WHERE id = ${reservation_id}`;
-        console.log('Reservation fetched successfully');
+        console.log('Reservation fetched successfully', data.rows[0]);
         
         return data.rows[0];
     } catch (error) {
         console.error('Error fetching reservation:', error);
         throw new Error('Error fetching reservation');
+    }
+}
+
+export async function addReservationFeedback({property_id, reservation_id, feedback}: {property_id: string, reservation_id: string, feedback: string}) {
+    try {
+        await sql`
+            INSERT INTO reservationfeedback (reservation_id, feedback) VALUES (${reservation_id}, ${feedback});
+        `;
+        console.log('Feedback inserted');
+    } catch (error) {
+        console.error('Error inserting feedback:', error);
+        return { message: 'Error inserting feedback' }
+    }
+    revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+    redirect(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+}
+
+export async function getReservationFeedback(reservation_id: string) {
+    noStore();
+    try{
+        const data = await sql`SELECT * FROM reservationfeedback WHERE reservation_id = ${reservation_id}`;
+        console.log('Feedback fetched successfully');
+        
+        return data.rows;
+    } catch (error) {
+        return { message: 'Error fetching feedback'}
     }
 }
 

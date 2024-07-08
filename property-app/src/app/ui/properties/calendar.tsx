@@ -46,6 +46,9 @@ const PropertyCalendar = ({ events = [], propertyId }: EventCalendarProps) => {
 
     const accessReservationDetails = async () => {
         closeModal();
+        if (!eventId) {
+             return await redirectPage(`/dashboard/properties/${propertyId}/calendar`);
+        }
         await redirectPage(`/dashboard/properties/${propertyId}/calendar/${eventId}`);
     }
 

@@ -12,11 +12,9 @@ export default async function AddDate({ params }: { params: any }) {
     }
 
     return (
-        <div className="grid grid-cols-3">
-            <div className="w-fit">
-                <BackButton href={`/dashboard/properties/${id}/calendar`} />
-            </div>
-            <AddDateForm events={events}/>
+        <div className="grid grid-cols-1">
+        
+            <AddDateForm events={events} id={id}/>
         </div>
     );
 }

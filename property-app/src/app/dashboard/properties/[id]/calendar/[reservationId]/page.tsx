@@ -1,7 +1,6 @@
 import { getPaymentsByReservationId, getReservationById, getReservationFeedback } from "@/app/actions";
-import { PlusIcon,BookmarkIcon } from "@heroicons/react/24/outline";
+import { PlusIcon,BookmarkIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { Event } from "@/app/ui/properties/calendar";
 import { BackButton } from "@/app/ui/properties/buttons";
 
 
@@ -51,7 +50,7 @@ export default async function ReservationPage({params}: {params: any}) {
             <div className="grid grid-cols-1 text-center w-fit justify-self-center">
                 <h1 className="font-bold text-center text-3xl p-10">Detalle de la reserva</h1>
                 <div className="grid grid-cols-1 m-5 justify-center">
-                    <div className="grid grid-cols-2 "> 
+                    <div className="grid grid-cols-2"> 
                             <div>
                                 <Link
                                     href={`/dashboard/properties/${id}/calendar/${reservationId}/addPayment`}
@@ -68,6 +67,24 @@ export default async function ReservationPage({params}: {params: any}) {
                                     >
                                     <span className="hidden md:block">Agregar opinion del grupo</span>{' '}
                                     <BookmarkIcon className="h-5 md:ml-4" />
+                                </Link>
+                            </div>
+                            <div className="justify-self-start mt-5">
+                                <Link
+                                    href={`/dashboard/properties/${id}/calendar/${reservationId}/edit`}
+                                    className="flex h-10 w-fit items-center rounded-lg bg-gray-600 px-4 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                    >
+                                    <span className="hidden md:block">Editar reserva</span>{' '}
+                                    <PencilIcon className="h-5 md:ml-4" />
+                                </Link>
+                            </div>
+                            <div className="justify-self-end mt-5">
+                                <Link
+                                    href={`/dashboard/properties/${id}/calendar/${reservationId}/addFeedback`}
+                                    className="flex h-10 w-fit items-center rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                    >
+                                    <span className="hidden md:block">Eliminar</span>{' '}
+                                    <TrashIcon className="h-5 md:ml-4" />
                                 </Link>
                             </div>
                     </div>
@@ -100,8 +117,8 @@ export default async function ReservationPage({params}: {params: any}) {
                             </h3>
                         </div>
                     </div>
-                    <div className="flex justify-center items-center w-fit mt-5">
-                        <table className="border border-black">
+                    <div className="flex justify-center items-center mt-5">
+                        <table className="border border-black w-max">
                             <thead>
                                 <tr >
                                     <th className="border border-black">Detalle pago</th>
@@ -119,7 +136,7 @@ export default async function ReservationPage({params}: {params: any}) {
                                             <button className="bg-slate-500 hover:bg-slate-800 p-2 rounded-lg">Editar</button>
                                         </td>
                                         <td className="p-5 m-5">
-                                            <button className="bg-red-500 hover:bg-red-800 p-2 rounded-lg">
+                                            <button className="bg-red-600 hover:bg-red-800 p-2 rounded-lg text-white">
                                                 Eliminar
                                             </button>
                                         </td>

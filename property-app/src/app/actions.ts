@@ -208,6 +208,23 @@ export async function getReservationById(reservation_id: any): Promise<Event | u
     }
 }
 
+export async function updateReservation(reservation_id: string, {startDate, endDate, title, color, hosts}: {startDate: string, endDate: string, title: string, color: string, hosts: number}, property_id: string) {
+    try {
+        await sql`
+            UPDATE reservations 
+            SET start_date = ${startDate}, end_date = ${endDate}, title = ${title}, color = ${color}, hosts = ${hosts}
+            WHERE id = ${reservation_id};
+        `;
+        console.log('Reservation updated');
+    } catch (error) {
+        console.error('Error updating reservation:', error);
+        return { message: 'Error updating reservation' }
+    }
+    revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+    revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}/edit`);
+    redirect(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
+}
+
 export async function addReservationFeedback({property_id, reservation_id, feedback}: {property_id: string, reservation_id: string, feedback: string}) {
     try {
         await sql`

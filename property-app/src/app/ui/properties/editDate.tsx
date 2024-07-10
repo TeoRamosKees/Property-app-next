@@ -23,7 +23,7 @@ export default async function EditDate({ reservations = [], id }: { reservations
             </div>
             <div className="grid grid-cols-1 gap-2 mb-5 mt-5 text-center">
                 <div className="flex flex-col items-center">
-                    <h3 className="text-2xl font-bold">Alquileres futuros</h3>
+                    <h3 className="text-4xl font-bold">Alquileres futuros</h3>
                 </div>
             </div>
             <div>
@@ -31,7 +31,7 @@ export default async function EditDate({ reservations = [], id }: { reservations
             </div>
             <div className="grid grid-cols-1 gap-2 mb-5 mt-5 text-center">
                 <div className="flex flex-col items-center">
-                    <h3 className="text-2xl font-bold">Alquileres Pasados</h3>
+                    <h3 className="text-4xl font-bold">Alquileres Pasados</h3>
                 </div>
             </div>
             <div>

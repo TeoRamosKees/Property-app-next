@@ -12,7 +12,6 @@ type PropertyType = {
 async function renderProperties() {
     const session = await getSession();
     console.log(`Session: ${session}`);
-    //session = { "user": { "email": "teo2@hotmail.com", "password": "teoram" }, "expires": "2024-07-01T23:31:42.052Z", "iat": 1719876692, "exp": 1719876702 }
     const userEmail = session.user.email;
     const user = await getUser(userEmail);
     if (!user) {

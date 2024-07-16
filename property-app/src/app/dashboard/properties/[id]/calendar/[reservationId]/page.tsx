@@ -3,6 +3,7 @@ import { PlusIcon,BookmarkIcon, PencilIcon, TrashIcon } from "@heroicons/react/2
 import Link from "next/link";
 import { BackButton } from "@/app/ui/properties/buttons";
 import PaymentsTable from "@/app/ui/properties/reservations/paymentsTable";
+import DeleteReservationButton from "@/app/ui/properties/reservations/deleteReservationButton";
 
 
 export default async function ReservationPage({params}: {params: any}) {
@@ -89,12 +90,7 @@ export default async function ReservationPage({params}: {params: any}) {
                                 </Link>
                             </div>
                             <div className="justify-self-end mt-5">
-                                <button
-                                    className="flex h-10 w-fit items-center rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                                    >
-                                    <span className="hidden md:block">Eliminar</span>{' '}
-                                    <TrashIcon className="h-5 md:ml-4" />
-                                </button>
+                                <DeleteReservationButton reservationById={reservationById} />
                             </div>
                     </div>
                     <div className="flex flex-col items-center border border-black mt-5">

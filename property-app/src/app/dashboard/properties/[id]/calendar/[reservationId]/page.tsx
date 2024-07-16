@@ -1,7 +1,8 @@
-import { getPaymentsByReservationId, getReservationById, getReservationFeedback } from "@/app/actions";
+import { deleteReservation, getPaymentsByReservationId, getReservationById, getReservationFeedback } from "@/app/actions";
 import { PlusIcon,BookmarkIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { BackButton } from "@/app/ui/properties/buttons";
+import PaymentsTable from "@/app/ui/properties/reservations/paymentsTable";
 
 
 export default async function ReservationPage({params}: {params: any}) {
@@ -33,6 +34,15 @@ export default async function ReservationPage({params}: {params: any}) {
             </div>
         ) 
     }
+    const handleDelete = async () => {
+        const propertyId = reservationById.property_id;
+        const startDate = reservationById.start_date.toString();
+        const endDate = reservationById.end_date.toString();
+        const title = reservationById.title;
+
+        await deleteReservation({ propertyId, startDate, endDate, title });
+    };
+
     
 
     //display payments as a table with edit and delete buttons
@@ -79,13 +89,12 @@ export default async function ReservationPage({params}: {params: any}) {
                                 </Link>
                             </div>
                             <div className="justify-self-end mt-5">
-                                <Link
-                                    href={`/dashboard/properties/${id}/calendar/${reservationId}/addFeedback`}
+                                <button
                                     className="flex h-10 w-fit items-center rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                     >
                                     <span className="hidden md:block">Eliminar</span>{' '}
                                     <TrashIcon className="h-5 md:ml-4" />
-                                </Link>
+                                </button>
                             </div>
                     </div>
                     <div className="flex flex-col items-center border border-black mt-5">
@@ -118,32 +127,7 @@ export default async function ReservationPage({params}: {params: any}) {
                         </div>
                     </div>
                     <div className="flex justify-center items-center mt-5">
-                        <table className="border border-black w-max">
-                            <thead>
-                                <tr >
-                                    <th className="border border-black">Detalle pago</th>
-                                    <th className="border border-black">Monto</th>
-                                    <th className="border border-black">Editar</th>
-                                    <th className="border border-black">Eliminar</th>
-                                </tr>
-                            </thead>
-                            <tbody className='m-5'>
-                                {reservationPayments.map((payment: any) => (
-                                    <tr key={payment.id} className="p-10 m-10 border border-black">
-                                        <td className="p-5 m-5 border border-black">{payment.detail}</td>
-                                        <td className="p-5 m-5 border border-black">{payment.amount}</td>
-                                        <td className="p-5 m-5 border border-black">
-                                            <button className="bg-slate-500 hover:bg-slate-800 p-2 rounded-lg">Editar</button>
-                                        </td>
-                                        <td className="p-5 m-5">
-                                            <button className="bg-red-600 hover:bg-red-800 p-2 rounded-lg text-white">
-                                                Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <PaymentsTable payments={reservationPayments}/>
                     </div>
                 </div>
             </div>

@@ -222,6 +222,7 @@ export async function updateReservation(reservation_id: string, {startDate, endD
     }
     revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
     revalidatePath(`/dashboard/properties/${property_id}/calendar/${reservation_id}/edit`);
+    revalidatePath(`/dashboard/properties/${property_id}/calendar`);
     redirect(`/dashboard/properties/${property_id}/calendar/${reservation_id}`);
 }
 

@@ -36,7 +36,7 @@ export default function AddPaymentForm({ property_id, reservation_id }: { proper
                         </label>
                         <input 
                             type="text" 
-                            placeholder="Informacion adicional" 
+                            placeholder="Informacion sobre el pago" 
                             className="border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             onChange={(e) => setDetail(e.target.value)}
                         />
@@ -47,7 +47,7 @@ export default function AddPaymentForm({ property_id, reservation_id }: { proper
                         </label>
                         <input 
                             type="number" 
-                            placeholder="Informacion adicional" 
+                            placeholder="Cantidad" 
                             className="border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                             onChange={(e) => setAmount(parseInt(e.target.value))}
                         />

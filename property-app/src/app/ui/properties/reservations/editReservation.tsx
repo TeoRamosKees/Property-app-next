@@ -38,7 +38,7 @@ export default function EditReservationForm({event}: {event: Event}) {
         <div className="m-10">
             <div className="grid grid-cols-3 gap-2 mb-5 text-center">
                 <div className="w-fit">
-                    <BackButton href={`/dashboard/properties/${event.id}/calendar/${event.id}`} />
+                    <BackButton href={`/dashboard/properties/${event.property_id}/calendar/${event.id}`} />
                 </div>
                 <div className="flex flex-col items-center">
                     <h1 className="text-4xl font-bold">Editar alquiler</h1>
